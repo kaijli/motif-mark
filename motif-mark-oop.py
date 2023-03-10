@@ -267,15 +267,18 @@ with open(fasta_oneline, "r") as fr:
     for line in fr:
         line = line.strip()
         if not line.startswith(">"):
+            # draw introns and exons
             read = Sequence(line, start_y[read_num], context)
             read.intron_exon()
             for i in range(len(motif_list)):
+                # draw motifs
                 temp_obj = Motif(motif_list[i], start_y[read_num], context, rgba_motifs[i])
                 temp_obj.translate()
                 temp_obj.add_loc(read.sequence)
                 temp_obj.draw()
             read_num += 1
         else:
+            # label each read with header from FASTA
             context.move_to(0, start_y[read_num] - 2*box_height/3)
             context.set_source_rgba(0, 0, 0, 1)
             context.show_text(f"{line[1:]}")
